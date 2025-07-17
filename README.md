@@ -239,9 +239,7 @@ go run test_https_support.go
   - **BOF (Beacon Object Files)** 支持
   - **内存加载 .NET** 程序集执行
   - **PIC (Position Independent Code) Beacon** 实现
-  - Shellcode 注入和进程空心化技术
-  - 反射 DLL 加载 (无文件落地执行)
-  - 多种注入技术 (SetWindowsHookEx, Manual DLL Mapping)
+  - 多种注入技术
 
 - 🎨 **用户体验优化**
   - **类似 Cobalt Strike 的交互式体验**
@@ -257,11 +255,6 @@ go run test_https_support.go
   - 图像压缩传输 (JPEG 压缩, 质量可调)
   - 截图历史管理 (本地存储, 远程查看)
 
-- 🔐 **高级持久化**
-  - 服务安装功能 (Windows 服务注册)
-  - 注册表持久化 (启动项, 服务配置)
-  - 计划任务集成 (定时执行, 触发器)
-  - WMI 事件订阅 (系统事件响应)
 
 - 📊 **增强监控**
   - 键盘记录功能 (按键记录, 窗口标题)
@@ -269,12 +262,6 @@ go run test_https_support.go
   - 系统信息收集 (硬件信息, 软件列表, 网络配置)
   - 实时性能监控 (CPU, 内存, 磁盘使用率)
 
-- 🛡️ **反检测技术**
-  - 进程名伪装 (随机进程名, 合法进程模拟)
-  - API Hook 检测 (反调试, 反沙箱)
-  - 沙箱环境识别 (虚拟机检测, 分析环境识别)
-  - 流量混淆增强 (多种伪装模式, 动态特征变化)
-  - 内存规避技术 (堆喷射, ROP 链构造)
 
 ### 🔒 安全特性
 
@@ -624,10 +611,8 @@ GateSentinel is a modern C2 (Command and Control) framework designed for securit
   - **BOF (Beacon Object Files)** support
   - **In-memory .NET assembly loading** and execution
   - **PIC (Position Independent Code) Beacon** implementation
-  - Shellcode injection and process hollowing techniques
-  - Reflective DLL loading (fileless execution)
-  - Multiple injection methods (SetWindowsHookEx, Manual DLL Mapping)
-
+  - Multiple injection methods
+  - 
 - 🎨 **User Experience Optimization**
   - **Cobalt Strike-like interactive experience**
   - **Comfortable payload generation experience** (one-click generation)
@@ -642,11 +627,6 @@ GateSentinel is a modern C2 (Command and Control) framework designed for securit
   - Image compression transmission (JPEG compression, adjustable quality)
   - Screenshot history management (local storage, remote viewing)
 
-- 🔐 **Advanced Persistence**
-  - Service installation (Windows service registration)
-  - Registry persistence (startup entries, service configuration)
-  - Scheduled task integration (timed execution, triggers)
-  - WMI event subscription (system event response)
 
 - 📊 **Enhanced Monitoring**
   - Keylogging functionality (keystroke recording, window titles)
@@ -654,12 +634,6 @@ GateSentinel is a modern C2 (Command and Control) framework designed for securit
   - System information collection (hardware info, software list, network config)
   - Real-time performance monitoring (CPU, memory, disk usage)
 
-- 🛡️ **Anti-Detection Techniques**
-  - Process name masquerading (random names, legitimate process simulation)
-  - API hook detection (anti-debugging, anti-sandbox)
-  - Sandbox environment identification (VM detection, analysis environment recognition)
-  - Enhanced traffic obfuscation (multiple disguise modes, dynamic signature changes)
-  - Memory evasion techniques (heap spraying, ROP chain construction)
 
 ### 🔒 Security Features
 
