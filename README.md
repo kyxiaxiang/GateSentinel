@@ -28,14 +28,6 @@ GateSentinel 是一个现代化的 C2 (Command and Control) 框架，专为安�
 - **📊 Web 管理界面**: 提供直观的 Web 界面进行 Beacon 管理
 - **🔧 灵活部署**: 支持 EXE 和 DLL 两种客户端部署模式
 
-### 🚀 技术特色
-
-#### 下一代 C2 体验
-- **🎯 PIC Beacon**: 位置无关代码，更好的内存执行能力
-- **🔧 BOF 支持**: 兼容 Beacon Object Files，扩展功能模块化
-- **💻 .NET 内存加载**: 直接在内存中执行 .NET 程序集
-- **🎨 CS 风格交互**: 类似 Cobalt Strike 的命令行和图形界面体验
-
 #### 现代化架构设计
 - **🏗️ 模块化设计**: 核心功能模块化，便于扩展和维护
 - **🔄 异步通信**: 高性能异步 I/O，支持大量并发连接
@@ -526,14 +518,6 @@ GateSentinel is a modern C2 (Command and Control) framework designed for securit
 - **🎯 Stealth Endpoints**: Customizable API endpoint paths to hide real communication interfaces
 - **📊 Web Management Interface**: Intuitive web interface for Beacon management
 - **🔧 Flexible Deployment**: Supports both EXE and DLL client deployment modes
-
-### 🚀 Technical Highlights
-
-#### Next-Generation C2 Experience
-- **🎯 PIC Beacon**: Position Independent Code for better in-memory execution
-- **🔧 BOF Support**: Compatible with Beacon Object Files for modular functionality
-- **💻 .NET Memory Loading**: Direct in-memory execution of .NET assemblies
-- **🎨 CS-Style Interaction**: Cobalt Strike-like command line and GUI experience
 
 #### Modern Architecture Design
 - **🏗️ Modular Design**: Core functionality is modularized for easy extension and maintenance
