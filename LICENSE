@@ -1,0 +1,46 @@
+MIT License
+
+Copyright (c) 2025 GateSentinel Project
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+DISCLAIMER / 免责声明:
+
+This software is intended for educational and authorized security testing 
+purposes only. Users are solely responsible for ensuring compliance with 
+applicable laws and regulations in their jurisdiction. The authors and 
+contributors of this project disclaim any responsibility for misuse of 
+this software.
+
+本软件仅用于教育和授权的安全测试目的。用户有责任确保在其管辖范围内
+遵守适用的法律法规。本项目的作者和贡献者对本软件的误用不承担任何责任。
+
+SECURITY NOTICE / 安全提示:
+
+- Only use this software on systems you own or have explicit permission to test
+- Ensure compliance with local laws and regulations before use
+- Protect any collected data according to applicable privacy laws
+- Use strong authentication and secure configurations in production
+
+- 仅在您拥有或明确授权测试的系统上使用此软件
+- 使用前请确保符合当地法律法规
+- 根据适用的隐私法律保护收集的任何数据
+- 在生产环境中使用强身份验证和安全配置

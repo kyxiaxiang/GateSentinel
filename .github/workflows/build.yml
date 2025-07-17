@@ -1,0 +1,129 @@
+name: Build GateSentinel
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  release:
+    types: [ published ]
+
+jobs:
+  build-server:
+    name: Build Server
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.21'
+    
+    - name: Cache Go modules
+      uses: actions/cache@v3
+      with:
+        path: ~/go/pkg/mod
+        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+        restore-keys: |
+          ${{ runner.os }}-go-
+    
+    - name: Build Server (Linux)
+      run: |
+        cd server
+        go mod tidy
+        GOOS=linux GOARCH=amd64 go build -o ../dist/gatesentinel-linux-amd64
+        GOOS=linux GOARCH=arm64 go build -o ../dist/gatesentinel-linux-arm64
+    
+    - name: Build Server (Windows)
+      run: |
+        cd server
+        GOOS=windows GOARCH=amd64 go build -o ../dist/gatesentinel-windows-amd64.exe
+        GOOS=windows GOARCH=386 go build -o ../dist/gatesentinel-windows-386.exe
+    
+    - name: Build Server (macOS)
+      run: |
+        cd server
+        GOOS=darwin GOARCH=amd64 go build -o ../dist/gatesentinel-darwin-amd64
+        GOOS=darwin GOARCH=arm64 go build -o ../dist/gatesentinel-darwin-arm64
+    
+    - name: Upload Server Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: server-binaries
+        path: dist/gatesentinel-*
+
+  build-client:
+    name: Build Client
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up MinGW
+      uses: msys2/setup-msys2@v2
+      with:
+        msystem: MINGW64
+        install: mingw-w64-x86_64-gcc
+    
+    - name: Build Client (Windows x64)
+      shell: msys2 {0}
+      run: |
+        cd beacon
+        mkdir -p ../dist
+        gcc -o ../dist/beacon-x64.exe beacon.c http.c tasks.c utils.c \
+          -lwininet -ladvapi32 -lkernel32 -luser32 -DUNICODE -D_UNICODE
+    
+    - name: Build Client (Windows x86)
+      shell: msys2 {0}
+      run: |
+        cd beacon
+        gcc -m32 -o ../dist/beacon-x86.exe beacon.c http.c tasks.c utils.c \
+          -lwininet -ladvapi32 -lkernel32 -luser32 -DUNICODE -D_UNICODE
+    
+    - name: Upload Client Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: client-binaries
+        path: dist/beacon-*.exe
+
+  create-release:
+    name: Create Release
+    needs: [build-server, build-client]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release'
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Download Server Artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: server-binaries
+        path: dist/
+    
+    - name: Download Client Artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: client-binaries
+        path: dist/
+    
+    - name: Create Release Archive
+      run: |
+        cd dist
+        tar -czf gatesentinel-${{ github.event.release.tag_name }}-linux-amd64.tar.gz gatesentinel-linux-amd64
+        tar -czf gatesentinel-${{ github.event.release.tag_name }}-linux-arm64.tar.gz gatesentinel-linux-arm64
+        zip gatesentinel-${{ github.event.release.tag_name }}-windows-amd64.zip gatesentinel-windows-amd64.exe beacon-x64.exe
+        zip gatesentinel-${{ github.event.release.tag_name }}-windows-386.zip gatesentinel-windows-386.exe beacon-x86.exe
+        tar -czf gatesentinel-${{ github.event.release.tag_name }}-darwin-amd64.tar.gz gatesentinel-darwin-amd64
+        tar -czf gatesentinel-${{ github.event.release.tag_name }}-darwin-arm64.tar.gz gatesentinel-darwin-arm64
+    
+    - name: Upload Release Assets
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          dist/*.tar.gz
+          dist/*.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

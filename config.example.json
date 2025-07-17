@@ -1,0 +1,37 @@
+{
+  "db_path": "./gatesentinel.db",
+  "admin_user": "admin",
+  "admin_pass": "admin123",
+  "client_token": "Demo",
+  "jwt_secret": "your-jwt-secret-key-here",
+  "webhook_url": "",
+  "webhook_key": "",
+  "webhook_enable": false,
+  "server": {
+    "host": "0.0.0.0",
+    "port": 8080,
+    "read_timeout": 60,
+    "write_timeout": 60,
+    "max_body_size": 10,
+    "enable_https": false,
+    "https_port": 8443,
+    "cert_file": "./certs/server.crt",
+    "key_file": "./certs/server.key"
+  },
+  "routes": {
+    "admin_prefix": "/websafe/admin",
+    "api_prefix": "/websafe/admin/api",
+    "beacon_endpoint": "/api.jsp",
+    "login_path": "/login",
+    "register_path": "/sync_debug"
+  },
+  "encoding": {
+    "use_custom_base64": true,
+    "custom_base64_table": "QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm0123456789+/"
+  },
+  "traffic_disguise": {
+    "enable": true,
+    "prefix": "<!--",
+    "suffix": "-->"
+  }
+}

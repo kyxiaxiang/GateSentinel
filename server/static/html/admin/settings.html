@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GateSentinel - Settings</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+    <link href="/static/css/admin.css" rel="stylesheet">
+    <style>
+        /* 确保导航栏样式优先级最高 */
+        nav.navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            color: white !important;
+        }
+        nav.navbar *,
+        nav.navbar a,
+        nav.navbar span,
+        nav.navbar div,
+        nav.navbar .navbar-brand,
+        nav.navbar .brand-text,
+        nav.navbar .brand-subtitle,
+        nav.navbar .user-name,
+        nav.navbar .user-role {
+            color: white !important;
+        }
+        nav.navbar .brand-subtitle {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+        nav.navbar .user-role {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+
+        /* 修复下拉菜单文字颜色 - 最高优先级 */
+        nav.navbar .dropdown-menu,
+        nav.navbar .dropdown-menu *,
+        nav.navbar .dropdown-menu .dropdown-item,
+        nav.navbar .dropdown-menu a,
+        nav.navbar .dropdown-menu span,
+        nav.navbar .dropdown-menu div,
+        nav.navbar .dropdown-menu i,
+        nav.navbar .dropdown-menu .dropdown-header {
+            color: #374151 !important;
+        }
+
+        nav.navbar .dropdown-menu .dropdown-header {
+            color: #111827 !important;
+        }
+
+        nav.navbar .dropdown-menu .dropdown-item:hover {
+            color: #4f46e5 !important;
+        }
+
+        nav.navbar .dropdown-menu .dropdown-item.logout-item:hover {
+            color: #ef4444 !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="container-fluid px-4">
+            <div class="navbar-content">
+                <!-- 左侧品牌区域 -->
+                <div class="navbar-brand-section">
+                    <a class="navbar-brand" href="#" onclick="navigateToBeacons()">
+                        <i class="bi bi-shield-lock"></i>
+                        <span class="brand-text">GateSentinel</span>
+                    </a>
+                    <div class="brand-subtitle">System Configuration</div>
+                </div>
+
+                <!-- 中间导航区域 -->
+                <div class="navbar-center">
+                    <div class="nav-tabs-container">
+                        <a href="#" onclick="navigateToBeacons()" class="nav-tab">
+                            <i class="bi bi-list-ul me-2"></i>
+                            Beacon List
+                        </a>
+                        <a href="#" onclick="navigateToSettings()" class="nav-tab active">
+                            <i class="bi bi-gear me-2"></i>
+                            Settings
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 右侧用户区域 -->
+                <div class="navbar-user-section">
+                    <div class="user-info">
+                        <div class="user-name">Administrator</div>
+                        <div class="user-role">System Admin</div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="user-menu-btn" onclick="toggleDropdown()">
+                            <i class="bi bi-person-circle"></i>
+                            <i class="bi bi-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-menu" id="userDropdown">
+                            <div class="dropdown-header">
+                                <i class="bi bi-person-circle me-2"></i>
+                                Administrator
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#" onclick="navigateToBeacons()">
+                                <i class="bi bi-list-ul me-2"></i>Beacon List
+                            </a>
+                            <a class="dropdown-item" href="#" onclick="navigateToSettings()">
+                                <i class="bi bi-gear me-2"></i>Settings
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item logout-item" href="#" onclick="logout()">
+                                <i class="bi bi-box-arrow-right me-2"></i>Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+        <!-- 第一行：安全配置 -->
+        <div class="row mb-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Change Password</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="passwordForm">
+                            <div class="mb-3">
+                                <label for="newPassword" class="form-label">New Password</label>
+                                <input type="password" class="form-control" id="newPassword" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                                <input type="password" class="form-control" id="confirmPassword" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Update Password</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <!-- JWT Secret Configuration -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">JWT Secret Configuration</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="jwtForm">
+                            <div class="mb-3">
+                                <label for="jwtSecret" class="form-label">JWT Secret Key</label>
+                                <input type="password" class="form-control" id="jwtSecret" required>
+                                <div class="form-text">Secret key for JWT token signing. Change this for security.</div>
+                            </div>
+                            <button type="submit" class="btn btn-warning">
+                                <i class="bi bi-shield-lock me-2"></i>Update JWT Secret
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-12">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Webhook Settings</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="webhookForm">
+                            <div class="mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="webhookEnable">
+                                    <label class="form-check-label" for="webhookEnable">Enable Webhook Notifications</label>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="webhookURL" class="form-label">Webhook URL</label>
+                                <input type="url" class="form-control" id="webhookURL">
+                            </div>
+                            <div class="mb-3">
+                                <label for="webhookKey" class="form-label">Webhook Key</label>
+                                <input type="text" class="form-control" id="webhookKey">
+                                <div class="form-text">Compatible with Bark push service</div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save Settings</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第二行：服务器配置 -->
+        <div class="row mb-4">
+            <div class="col-lg-6 col-md-12">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Server Configuration</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="serverForm">
+                            <div class="mb-3">
+                                <label for="serverHost" class="form-label">Server Host</label>
+                                <input type="text" class="form-control" id="serverHost" placeholder="0.0.0.0">
+                                <div class="form-text">Server bind address</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="serverPort" class="form-label">Server Port</label>
+                                <input type="number" class="form-control" id="serverPort" placeholder="8080" min="1" max="65535">
+                                <div class="form-text">Server listen port</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="readTimeout" class="form-label">Read Timeout (s)</label>
+                                        <input type="number" class="form-control" id="readTimeout" placeholder="60" min="1">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="writeTimeout" class="form-label">Write Timeout (s)</label>
+                                        <input type="number" class="form-control" id="writeTimeout" placeholder="60" min="1">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="maxBodySize" class="form-label">Max Body Size (MB)</label>
+                                <input type="number" class="form-control" id="maxBodySize" placeholder="10" min="1">
+                                <div class="form-text">Maximum request body size</div>
+                            </div>
+                            <button type="submit" class="btn btn-warning">
+                                <i class="bi bi-server me-2"></i>Save Server Config
+                            </button>
+                            <small class="text-muted d-block mt-2">
+                                <i class="bi bi-exclamation-triangle me-1"></i>
+                                Server restart required for host/port changes
+                            </small>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-12">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Route Configuration</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="routeForm">
+                            <div class="mb-3">
+                                <label for="adminPrefix" class="form-label">Admin Panel Prefix</label>
+                                <input type="text" class="form-control" id="adminPrefix" placeholder="/web/admin">
+                                <div class="form-text">URL prefix for admin panel</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="apiPrefix" class="form-label">API Prefix</label>
+                                <input type="text" class="form-control" id="apiPrefix" placeholder="/web/admin/api">
+                                <div class="form-text">URL prefix for API endpoints</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="beaconEndpoint" class="form-label">Beacon Endpoint</label>
+                                <input type="text" class="form-control" id="beaconEndpoint" placeholder="/api.jsp">
+                                <div class="form-text">Endpoint for beacon communication</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="registerPath" class="form-label">Register Path</label>
+                                <input type="text" class="form-control" id="registerPath" placeholder="/register">
+                                <div class="form-text">Path for beacon registration</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="loginPath" class="form-label">Login Path</label>
+                                <input type="text" class="form-control" id="loginPath" placeholder="/login">
+                                <div class="form-text">Custom login path for security</div>
+                            </div>
+                            <button type="submit" class="btn btn-info">
+                                <i class="bi bi-arrow-clockwise me-2"></i>Save & Hot Reload
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary ms-2" onclick="reloadConfig()">
+                                <i class="bi bi-arrow-repeat me-2"></i>Reload from File
+                            </button>
+                            <small class="text-muted d-block mt-2">
+                                <i class="bi bi-info-circle me-1"></i>
+                                Changes will be applied immediately with hot reload
+                            </small>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/admin/settings.js"></script>
+    <script>
+        // 下拉菜单功能
+        function toggleDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('show');
+
+            // 强制修复下拉菜单文字颜色
+            setTimeout(() => {
+                fixDropdownColors();
+            }, 10);
+        }
+
+        // 修复下拉菜单颜色
+        function fixDropdownColors() {
+            const dropdownItems = document.querySelectorAll('.dropdown-menu .dropdown-item');
+            const dropdownIcons = document.querySelectorAll('.dropdown-menu i');
+
+            dropdownItems.forEach(item => {
+                item.style.setProperty('color', '#374151', 'important');
+            });
+
+            dropdownIcons.forEach(icon => {
+                icon.style.setProperty('color', '#374151', 'important');
+            });
+        }
+
+        // 点击外部关闭下拉菜单
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('userDropdown');
+            const button = event.target.closest('.user-menu-btn');
+
+            if (!button && dropdown.classList.contains('show')) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        // 页面加载时修复颜色
+        document.addEventListener('DOMContentLoaded', function() {
+            fixDropdownColors();
+        });
+
+        // 导航函数
+        function navigateToBeacons() {
+            const adminPrefix = window.APP_CONFIG ? window.APP_CONFIG.adminPrefix : '/web/admin';
+            window.location.href = adminPrefix + '/beacons';
+        }
+
+        function navigateToSettings() {
+            const adminPrefix = window.APP_CONFIG ? window.APP_CONFIG.adminPrefix : '/web/admin';
+            window.location.href = adminPrefix + '/settings';
+        }
+
+        // 退出登录
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('adminToken');
+                localStorage.removeItem('token');
+                const loginPath = window.APP_CONFIG ? window.APP_CONFIG.loginPath : '/login';
+                window.location.href = loginPath;
+            }
+        }
+    </script>
+</body>
+</html>
